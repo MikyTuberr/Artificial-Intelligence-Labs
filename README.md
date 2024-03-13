@@ -1,4 +1,4 @@
-# Laboratory 1: Regression
+# Laboratory 1: Linear Regression 
 
 ## Overview
 In this lab, we focus on linear regression, a fundamental technique in machine learning. Linear regression aims to find a linear relationship between input features and an outcome variable. We explore the concepts of linear regression, data splitting, cost functions, gradient descent, and standardization.
@@ -18,7 +18,7 @@ Gradient descent is an iterative optimization algorithm used to minimize the cos
 ## Standardization
 Standardization is a preprocessing step where input features are scaled to have a mean of 0 and a standard deviation of 1. This ensures that features are on a similar scale, facilitating the training process.
 
-# Laboratory 2: Genetic Algorithm for the Knapsack Problem
+# Laboratory 2: Genetic Algorithm 
 
 ## Overview
 In this lab, we delve into the application of genetic algorithms, a class of optimization algorithms inspired by the process of natural selection, to solve the Knapsack Problem. The Knapsack Problem involves selecting a combination of items with maximum value while not exceeding a given weight constraint.
