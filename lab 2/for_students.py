@@ -39,16 +39,19 @@ def single_point_crossover(parent1, parent2):
 
     return child1, child2
 
-def make_chlidren(parents):
-    return [single_point_crossover(parents[i], parents[i+1]) for i in range(0, len(parents), 2)]
+def make_children(parents):
+    children = [single_point_crossover(random.choice(parents), 
+                                       random.choice(parents)) for _ in range(0, len(parents), 2)]
+    return [child for sublist in children for child in sublist]
 
-def mutation(individual):
-    index_to_mutate = random.randint(0, len(individual) - 1)  
-    individual[index_to_mutate] = 1 - individual[index_to_mutate]
+def mutation(individual, p_mut):
+    for i in range(len(individual)):
+        if random.random() < p_mut:
+            individual[i] = 1 - individual[i]  
     return individual
 
-def mutate_generation(generation):
-    return([mutation(random.choice(individual)) for individual in generation])
+def mutate_generation(generation,p_mut):
+    return([mutation(individual, p_mut) for individual in generation])
 
 def update_population(n_elite, population, new_generation, items, knapsack_max_capacity):
     elite = sorted(population, key=lambda individual: fitness(items, knapsack_max_capacity, individual), reverse=True)[:n_elite]
@@ -75,8 +78,8 @@ for _ in range(generations):
     # TODO: implement genetic algorithm
 
     parents = roulette_wheel_selection(items, population, knapsack_max_capacity, n_selection) #2
-    new_generation = make_chlidren(parents) #3
-    new_generation = mutate_generation(new_generation) #4
+    new_generation = make_children(parents) #3
+    new_generation = mutate_generation(new_generation, 0.1) #4
     population = update_population(n_elite, population, new_generation, items, knapsack_max_capacity) #5
 
     best_individual, best_individual_fitness = population_best(items, knapsack_max_capacity, population)
