@@ -1,9 +1,10 @@
+from typing import Tuple
 import numpy as np
 import matplotlib.pyplot as plt
 from LinearReg import LinearReg as lr
 from data import get_data, inspect_data, split_data
 
-def plot_regression_line(x, y, theta):
+def plot_regression_line(x: np.ndarray, y: np.ndarray, theta: np.ndarray) -> None:
     x_values = np.linspace(min(x), max(x), 100)
     theta = np.squeeze(theta)
     y_values = float(theta[0]) + float(theta[1]) * x_values
@@ -13,7 +14,7 @@ def plot_regression_line(x, y, theta):
     plt.ylabel('MPG')
     plt.show()
 
-def standardize_data(data):
+def standardize_data(data: np.ndarray) -> Tuple[np.ndarray, float, float]:
     mean = np.mean(data)
     std_dev = np.std(data)
     return lr.ZS(data, mean, std_dev), mean, std_dev
