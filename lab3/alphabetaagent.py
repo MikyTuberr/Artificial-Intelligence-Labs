@@ -4,7 +4,7 @@ from connect4 import Connect4
 import copy
 
 
-class MinMaxAgent:
+class AlphaBetaAgent:
     def __init__(self, my_token: str):
         self.my_token: str = my_token
 
@@ -13,13 +13,13 @@ class MinMaxAgent:
             raise AgentException('Not my round')
         
         if self.my_token == 'x':
-            _, best_move = self._minmax(connect4, False, 3)
+            _, best_move = self._alphabeta(connect4, False, 6, 0.0, 0.0)
         else:
-            _, best_move = self._minmax(connect4, True, 3)
+            _, best_move = self._alphabeta(connect4, True, 6, 0.0, 0.0)
             
         return best_move
 
-    def _minmax(self, s: Connect4, is_maximizer: bool, d: int) -> Tuple[float, Optional[int]]:
+    def _alphabeta(self, s: Connect4, x: bool, d: int, alpha: float, beta: float) -> Tuple[float, Optional[int]]:
         if s._check_game_over():
             if s.wins == 'o':
                 return 1, None
@@ -31,18 +31,27 @@ class MinMaxAgent:
         if d == 0:
             return 0.2 * s.count_corners_taken(self.my_token), None
 
-        best_value: float = float("-inf") if is_maximizer else float("inf")
+        best_value: float = float("-inf") if x else float("inf")
         best_move: Optional[int] = None
 
         for drop in s.possible_drops():
             new_connect4 = copy.deepcopy(s)
             new_connect4.drop_token(drop)
-            value, _ = self._minmax(new_connect4, not is_maximizer, d - 1)
+            value, _ = self._alphabeta(new_connect4, not x, d - 1, alpha, beta)
 
-            if (is_maximizer and value > best_value) or (not is_maximizer and value < best_value):
+            if x and value > best_value:
                 best_value = value
                 best_move = drop
+                alpha = best_value
+            elif not x and value < best_value:
+                best_value = value
+                best_move = drop
+                beta = best_value
+
+            if best_value >= beta if x else best_value <= alpha:
+                break
 
         return best_value, best_move
 
-    
+                
+        
